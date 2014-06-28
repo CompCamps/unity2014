@@ -13,6 +13,8 @@ public class BirdController : MonoBehaviour {
 	public float rightPipeLimit = 24;
 	public float leftPipeLimit = -16;
 
+	public float rotationMultiplier = 2;
+
 	int score = 0;
 	int highscore = 0;
 
@@ -75,7 +77,10 @@ public class BirdController : MonoBehaviour {
 		Vector3 pos = this.rigidbody.transform.position;
 		pos.z = 0;
 		this.rigidbody.transform.position = pos;
-		this.rigidbody.transform.rotation = new Quaternion(0,0,0,0);
+		Vector3 rot = this.rigidbody.transform.rotation.eulerAngles;
+		rot.y = 90;
+		rot.x = -this.rigidbody.velocity.y * rotationMultiplier;
+		this.rigidbody.rotation = Quaternion.Euler(rot);
 	}
 
 	void OnCollisionEnter(Collision collision) {
@@ -97,6 +102,7 @@ public class BirdController : MonoBehaviour {
 		pipeObject1.rigidbody.velocity = new Vector3(0, 0, 0);
 		pipeObject2.rigidbody.velocity = new Vector3(0, 0, 0);
 		this.rigidbody.velocity = new Vector3(0,0,0);
+		this.rigidbody.rotation = Quaternion.Euler(new Vector3(0, 90, 0));
 	}
 
 	void OnGUI() {
